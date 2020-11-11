@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  mysql-client:
+    image: mysql:5.6
+    container_name: mysql-client
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_PASSWORD=1234
+      - MYSQL_USER=dev_user
+      - MYSQL_DATABASE=db_persona
+    expose:
+      - 3306
+  alumnos-app:
+    container_name: persona-app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "/wait && java -jar app.jar"
+    environment:
+      - MYSQL_HOST=mysql_client
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=db_persona
+      - MYSQL_USER=dev_user
+      - MYSQL_PASSWORD=1234
+      - WAIT_HOSTS=mysql-client:3306
+    depends_on:
+      - mysql-client
+    restart: on-failure
+    ports:
+      - "9000:8081"
