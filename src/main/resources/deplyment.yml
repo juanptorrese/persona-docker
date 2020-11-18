@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: persona-image
-          image: streelz/persona-image:0.0.1
+          image: juanptorrese/api-persona1.0:latest
           ports:
             - containerPort: 8080                
           env:   # Setting Enviornmental Variables
