@@ -4,47 +4,31 @@ DESARROLLO
 
 Docker
 
-  1- Empaquetar la API (mvn clean package)
+  1- Empaquetar la API (mvn clean package -DskipTests)
   
-  2- Correr containers (docker-compose up --build -d)
+  2- Crear la imagen a partir del docker file(docker build -t persona-image)
   
-  3- Cuando finalice el proceso de desarrollo utilizar (docker-compose down)
+  3- Subir imagen a docker hub( docker tag persona-image {$UsuarioDocker$}/api-persona1.0:latest) y pushearla ( docker push {$UsuarioDocker$}/api-persona1.0)
 
-Ver Logs y estado de los containers
-
-  4- Para ver Logs de la aplicacion, correr: docker logs -f alumnos-app
-  
-  5- Para ver el estado de los contenedores: docker-compose ps
-
-Como entrar a un container
-
-  6- Para la aplicacion Spring: docker exec -it alumnos-app bash
-  
-  7- Para la BD mysql: docker exec -it mysql-client mysql -u dev_user --password=1234
 
 Kubernetes
 
   1- Levantar cluster de Minikube con: minikube start
   
-  2- Si es la primera vez que se corre la aplicacion: kubectl apply -f mysql-persistent-volume.yml
+  2- Creacion de pods y services(ubicados en resources)
   
-  3- Correr deployment de la BD MySql: kubectl apply -f mysql-server.yml
+  3- Correr todos los ymls (kubectl apply -f $Nombreyml.yml$), para los 5 (deployment,mysqlconfigmap,mysqlcredentials,mysqlrootcredentials,mysqldeployment)
   
-  4- Para correr deployment de la Aplicacion Spring: kubectl apply -f alumnos-server.yml
-  
-  5- Para correr la aplicacion verificar la IP, puertos: minikube service alumnos-server-port --url
+  4- Para correr la aplicacion verificar la IP, puertos: minikube service persona-image --url, luego nos metemos a esa url para corrobar que funcione
   
 Ver logs y estado de los PODS
 
-  6- Para ver el estado de los PODS: kubectl get pods
+  5- Para ver el estado de los PODs: kubectl get pods
   
-  7- Para ver el estado particular de un POD: kubectl describe pod -namepod-
+  6- Para ver el estado particular de un POD: kubectl describe pod -namepod-
   
-  8- Para ver los logs de la aplicacion correr: kubectl logs -f -namepod-
+  7- Para ver los estados de los services kubectl get svc
+  
+  8- Para ver el estado de los PODs con la IP  kubectl get pods -o wide
   
 
-Como entrar a un POD
-
-  9- Para la aplicacion Spring: kubectl exec -it -namepod- bash
-  
-  10- Para la BD mysql: kubectl exec -it -mysql-namepod- mysql -u apirest-user --password=1234
