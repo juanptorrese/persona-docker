@@ -1,4 +1,14 @@
-FROM openjdk:14
-COPY ./target/persona-0.0.1-SNAPSHOT.jar /tmp/persona-app.jar
-WORKDIR /tmp
-CMD ["java", "-jar", "persona-app.jar"]
+# Build stage
+FROM maven:3.6.3-jdk-8-slim AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml -Dmaven.test.skip=true clean package
+
+#
+# Package stage
+#
+FROM openjdk:8-jdk-alpine
+WORKDIR /alumnos-app/
+COPY --from=build /home/app/target/*.jar ./app.jar
+ENV PORT 8080
+CMD ["java","-jar","-Dserver.port=${PORT}","./app.jar"]
