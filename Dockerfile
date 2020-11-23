@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.6.3-jdk-8-slim AS build
+FROM maven:3.6.3-jdk-14 AS build
 COPY src /home/app/src
 COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml -Dmaven.test.skip=true clean package
@@ -7,7 +7,7 @@ RUN mvn -f /home/app/pom.xml -Dmaven.test.skip=true clean package
 #
 # Package stage
 #
-FROM openjdk:8-jdk-alpine
+FROM openjdk:14
 WORKDIR /alumnos-app/
 COPY --from=build /home/app/target/*.jar ./app.jar
 ENV PORT 8080
