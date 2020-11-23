@@ -7,7 +7,7 @@ RUN mvn -f /home/app/pom.xml -DskipTests=true clean package
 #
 # Package stage
 #
-FROM openjdk:14.0.2-oracle
+FROM openjdk:14
 WORKDIR /persona-app/
 COPY --from=build /home/app/target/*.jar ./app.jar
 ENV PORT 8080
